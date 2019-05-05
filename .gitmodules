@@ -1,3 +1,6 @@
 [submodule "snippets/test.js"]
 	path = snippets/test.js
 	url = https://gist.github.com/b49059567da214330399ee1a4b4a3775.git
+[submodule "snippets/test"]
+	path = snippets/test
+	url = https://gist.github.com/b49059567da214330399ee1a4b4a3775.git
