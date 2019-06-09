@@ -4,3 +4,9 @@
 [submodule "snippets/test"]
 	path = snippets/test
 	url = https://gist.github.com/b49059567da214330399ee1a4b4a3775.git
+[submodule "snippets/94e23769039db7d451f993c467f25d62"]
+	path = snippets/methodsclient
+	url = https://gist.github.com/94e23769039db7d451f993c467f25d62.git
+[submodule "snippets/runner"]
+	path = snippets/runner
+	url = https://gist.github.com/2730a5dffb295b44ce21b8314d3295a9.git
