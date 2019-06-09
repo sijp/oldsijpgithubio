@@ -1,8 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://sijp.github.io/snippets/test/test.js"></script>
-    <style>
+   <script>
+      const mapper = {};
+      const FakeRest = {
+         get(path, callback){
+            return new Promise((resolve,reject) => {
+               setTimeout(()=>{
+                  const result = mapper[path]();
+                  resolve(result);
+               }, 1000);
+            })
+         }
+      };
+
+      const FakeExpress = {
+         get(path, callback) {
+            mapper[path] = callback;
+         }
+      }
+   </script>
+   <script src="https://sijp.github.io/snippets/test/test.js"></script>
+   <style>
     body{
         background-color: #1f1f22;
     }
