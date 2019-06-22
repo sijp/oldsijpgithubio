@@ -1,8 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://sijp.github.io/snippets/test/test.js"></script>
-    <style>
+    <script type="text/javascript">
+            const server_uri = "";
+            const mapper = {};
+            const FakeRest = {
+                get(path, callback){
+                    return new Promise((resolve,reject) => {
+                        setTimeout(()=>{
+                            const result = mapper[path]();
+                            resolve(result);
+                        }, 1000);
+                    })
+                }
+            };
+        
+            const FakeExpress = {
+                get(path, callback) {
+                    mapper[path] = callback;
+                }
+            }
+
+            async function run(){
+                const serviceProxy = proxify(MethodClient);
+
+                document.getElementById("localvalue").value = await serviceProxy.foo();
+                document.getElementById("remotevalue").value = await serviceProxy.bar();
+            }
+    </script>
+    <script src="../snippets/methodsclient/methodclient.js"></script>
+    <script src="../snippets/methodserver/methodserver.js"></script>
+    <script src="../snippets/runner/runner.js"></script>
+     <style>
     body{
         background-color: #1f1f22;
     }
@@ -22,6 +51,8 @@
     </style>
 </head>
 <body>
-
+<button onclick="javascript:run();">Run!</button>
+<input type="text" id="localvalue"/>
+<input type="text" id="remotevalue"/>
 </body>
 </html>
