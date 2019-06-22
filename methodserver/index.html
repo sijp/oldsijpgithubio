@@ -6,8 +6,10 @@
             const mapper = {};
             const FakeRest = {
                 get(path, callback){
+                    fakeconsole.log("[Sending request to Remote (fake) server...]");
                     return new Promise((resolve,reject) => {
-                        setTimeout(()=>{
+                        setTimeout(async ()=>{
+                            await fakeconsole.log("[Got Response!]");
                             const result = mapper[path]();
                             resolve(result);
                         }, 1000);
@@ -21,11 +23,28 @@
                 }
             }
 
+            const fakeconsole = {
+                async log(text){
+                    return new Promise((resolve,reject)=>{
+                        setTimeout(()=>{
+                            faketerminal.value += `${text}\n`;
+                            resolve(undefined);
+                        }, 200);
+                    });
+                },
+                clear(){
+                    faketerminal.value = "";
+                }
+            }
+
             async function run(){
                 const serviceProxy = proxify(MethodClient);
-
-                document.getElementById("localvalue").value = await serviceProxy.foo();
-                document.getElementById("remotevalue").value = await serviceProxy.bar();
+                const faketerminal = document.getElementById("faketerminal");
+                fakeconsole.clear();
+                await fakeconsole.log("Running foo...");
+                await fakeconsole.log( `>>> ${await serviceProxy.foo()}`);
+                await fakeconsole.log( "Running bar...");
+                await fakeconsole.log( `>>> ${await serviceProxy.bar()}`);
             }
     </script>
     <script src="../snippets/methodsclient/methodclient.js"></script>
@@ -47,12 +66,32 @@
         padding:20px;
         text-align: center;
     }
+
+    #faketerminal-container{
+        position: absolute;
+        left: 320px;
+        top: 10px;
+    }
+    #faketerminal{
+        background-color: #303035;
+        color:papayawhip;
+    }
+
+    .gist{
+        width: 300px;
+
+    }
     
     </style>
+    <script src="https://gist.github.com/sijp/94e23769039db7d451f993c467f25d62.js"></script>
+    <script src="https://gist.github.com/sijp/b04178a2d91846b816f0c31a764316e0.js"></script>
+    <script src="https://gist.github.com/sijp/2730a5dffb295b44ce21b8314d3295a9.js"></script>
 </head>
 <body>
+        
+<div id="faketerminal-container"><textarea id="faketerminal" cols="80" rows="24" value="">
+</textarea><br/>
 <button onclick="javascript:run();">Run!</button>
-<input type="text" id="localvalue"/>
-<input type="text" id="remotevalue"/>
+</div>
 </body>
 </html>
